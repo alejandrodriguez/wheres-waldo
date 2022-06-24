@@ -1,0 +1,87 @@
+:root {
+    --selected-area-length: 50px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.Game {
+    width: max(100vw, 1850px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.image-container {
+    width: 1280px;
+    height: 720px;
+    border: 1px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.Game img {
+    object-fit: contain;
+}
+
+.answer-key {
+    position: absolute;
+    right: 75px;
+    list-style: none;
+    font-size: 20px;
+    border: 5px solid black;
+    border-radius: 10px;
+    height: 500px;
+    width: 200px;
+}
+
+.answer-key > * {
+    margin: 10px 0;
+    text-align: center;
+}
+
+.found {
+    text-decoration: line-through;
+}
+
+.select-wrapper {
+    display: inline-flex;
+    flex-direction: column;
+    position: absolute;
+}
+
+.selected-area {
+    width: var(--selected-area-length);
+    height: var(--selected-area-length);
+    border-radius: 10px;
+    border: 4px solid rgba(255, 30, 30, 0.8);
+}
+
+.select-character {
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    position: absolute;
+    top: var(--selected-area-length);
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.select-character > div {
+    border-bottom: 1px solid black;
+    padding: 5px 10px;
+}
+
+.select-character > div:last-child {
+    border-bottom: none;
+}
+
+.select-character > div:hover {
+    background-color: rgb(151, 170, 255);
+}
