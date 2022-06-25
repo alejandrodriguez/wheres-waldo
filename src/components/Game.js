@@ -1,6 +1,6 @@
 // TODO Change out mickey specific for props
 
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import AnswerKey from "./AnswerKey";
 import CharacterSelect from "./CharacterSelect";
 
@@ -16,6 +16,8 @@ function Game(props) {
             return { name: character.name, found: false };
         })
     );
+
+    const [stopwatch, setStopwatch] = useState(0);
 
     function displayCharacterSelect(e) {
         if (characterSelect.display) {
@@ -44,58 +46,84 @@ function Game(props) {
             characterSelect.yAnswer <= correctY + 25
         ) {
             console.log("Correct!");
+            // Update the character's found status to be true
             const updatedFoundStatus = [...foundStatus];
             const index = updatedFoundStatus.indexOf(
                 updatedFoundStatus.find(character => character.name === name)
             );
             updatedFoundStatus[index] = { ...updatedFoundStatus[index] };
             updatedFoundStatus[index].found = true;
+            // Check if all characters have been found
             setFoundStatus(updatedFoundStatus);
+            if (
+                updatedFoundStatus.every(character => character.found === true)
+            ) {
+                stopStopwatch();
+                console.log("All found!", "Time:", stopwatch);
+            }
         } else {
             console.log("Wrong!");
         }
         setCharacterSelect(({ ...characterSelect }.display = false));
     }
 
+    function stopStopwatch() {
+        clearInterval(stopwatchID.current);
+    }
+
+    // Set up timer
+    const stopwatchID = useRef(null);
+
+    // Start timer
+    useEffect(() => {
+        stopwatchID.current = setInterval(() => {
+            setStopwatch(time => time + 10);
+        }, 10);
+        return stopStopwatch;
+    }, []);
+
     return (
-        <div className="Game">
-            <div className="image-container">
-                <div className="image-wrapper">
-                    <img
-                        onClick={e => displayCharacterSelect(e)}
-                        src={props.src}
-                        alt="A where's waldo game involving Mickey and friends at Disneyland."
-                    />
-                    {foundStatus
-                        .filter(character => character.found)
-                        .map((foundCharacter, index) => {
-                            const { x, y } = props.characters.find(
-                                character =>
-                                    character.name === foundCharacter.name
-                            );
-                            console.log(x, y);
-                            return (
-                                <div
-                                    className="correct-area"
-                                    // Subtract half of --selected-area-length as defined in CSS
-                                    style={{ top: y - 25, left: x - 25 }}
-                                    key={index}
-                                ></div>
-                            );
-                        })}
+        <>
+            <div>{stopwatch / 1000}</div>
+            <div className="Game">
+                <div className="image-container">
+                    <div className="image-wrapper">
+                        <img
+                            onClick={e => displayCharacterSelect(e)}
+                            src={props.src}
+                            alt="A where's waldo game involving Mickey and friends at Disneyland."
+                        />
+                        {foundStatus
+                            .filter(character => character.found)
+                            .map((foundCharacter, index) => {
+                                const { x, y } = props.characters.find(
+                                    character =>
+                                        character.name === foundCharacter.name
+                                );
+                                return (
+                                    <div
+                                        className="correct-area"
+                                        // Subtract half of --selected-area-length as defined in CSS
+                                        style={{ top: y - 25, left: x - 25 }}
+                                        key={index}
+                                    ></div>
+                                );
+                            })}
+                    </div>
                 </div>
+                {/* Key listing characters to be found */}
+                <AnswerKey foundStatus={foundStatus} />
+                {/* Display popup menu on click */}
+                {characterSelect.display && (
+                    <CharacterSelect
+                        foundStatus={foundStatus}
+                        checkAnswer={checkAnswer}
+                        x={characterSelect.x}
+                        y={characterSelect.y}
+                    />
+                )}
             </div>
-            {/* Key listing characters to be found */}
-            <AnswerKey foundStatus={foundStatus} />
-            {characterSelect.display && (
-                <CharacterSelect
-                    foundStatus={foundStatus}
-                    checkAnswer={checkAnswer}
-                    x={characterSelect.x}
-                    y={characterSelect.y}
-                />
-            )}
-        </div>
+        </>
     );
 }
 

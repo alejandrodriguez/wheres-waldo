@@ -19,7 +19,6 @@
 .image-container {
     width: 1280px;
     height: 720px;
-    border: 1px solid black;
     display: flex;
     justify-content: center;
     align-items: center;
