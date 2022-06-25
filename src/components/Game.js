@@ -24,10 +24,8 @@ function Game(props) {
             setCharacterSelect({ x: 0, y: 0, display: false });
         } else {
             setCharacterSelect({
-                x: e.clientX,
-                y: e.clientY,
-                xAnswer: e.nativeEvent.offsetX,
-                yAnswer: e.nativeEvent.offsetY,
+                x: e.nativeEvent.offsetX,
+                y: e.nativeEvent.offsetY,
                 display: true
             });
         }
@@ -40,10 +38,10 @@ function Game(props) {
         );
         // Check if answer is within 50 pixels of pixel marked as correct answer
         if (
-            correctX - 25 <= characterSelect.xAnswer &&
-            characterSelect.xAnswer <= correctX + 25 &&
-            correctY - 25 <= characterSelect.yAnswer &&
-            characterSelect.yAnswer <= correctY + 25
+            correctX - 25 <= characterSelect.x &&
+            characterSelect.x <= correctX + 25 &&
+            correctY - 25 <= characterSelect.y &&
+            characterSelect.y <= correctY + 25
         ) {
             console.log("Correct!");
             // Update the character's found status to be true
@@ -83,9 +81,9 @@ function Game(props) {
     }, []);
 
     return (
-        <>
-            <div>{stopwatch / 1000}</div>
-            <div className="Game">
+        <div className="Game">
+            <h1>Where's Mickey?</h1>
+            <div className="Game-main">
                 <div className="image-container">
                     <div className="image-wrapper">
                         <img
@@ -93,6 +91,16 @@ function Game(props) {
                             src={props.src}
                             alt="A where's waldo game involving Mickey and friends at Disneyland."
                         />
+                        {/* Display popup menu on click */}
+                        {characterSelect.display && (
+                            <CharacterSelect
+                                foundStatus={foundStatus}
+                                checkAnswer={checkAnswer}
+                                x={characterSelect.x}
+                                y={characterSelect.y}
+                            />
+                        )}
+                        {/* Display marker for found characters */}
                         {foundStatus
                             .filter(character => character.found)
                             .map((foundCharacter, index) => {
@@ -113,25 +121,10 @@ function Game(props) {
                 </div>
                 {/* Key listing characters to be found */}
                 <AnswerKey foundStatus={foundStatus} />
-                {/* Display popup menu on click */}
-                {characterSelect.display && (
-                    <CharacterSelect
-                        foundStatus={foundStatus}
-                        checkAnswer={checkAnswer}
-                        x={characterSelect.x}
-                        y={characterSelect.y}
-                    />
-                )}
             </div>
-        </>
+            <div className="stopwatch">{(stopwatch / 1000).toFixed(2)}</div>
+        </div>
     );
 }
 
 export default Game;
-
-// Mickey: 843, 291
-// Minnie: 69, 257
-// Donald: 418, 406
-// Daisy: 612, 495
-// Goofy: 670, 243
-// Pluto: 218, 494
