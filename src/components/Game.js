@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import AnswerKey from "./AnswerKey";
+import CharacterSelect from "./CharacterSelect";
 
 function Game(props) {
     const [characterSelect, setCharacterSelect] = useState({
@@ -87,32 +88,12 @@ function Game(props) {
             {/* Key listing characters to be found */}
             <AnswerKey foundStatus={foundStatus} />
             {characterSelect.display && (
-                <div
-                    className="select-wrapper"
-                    style={{
-                        // Subtract half of --selected-area-length as defined in CSS
-                        top: characterSelect.y - 25,
-                        left: characterSelect.x - 25
-                    }}
-                >
-                    {/* Box highlighting selected area when image is clicked */}
-                    <div className="selected-area"></div>
-                    {/* Display characters not yet found to choose from for answer */}
-                    <div className="select-character">
-                        {foundStatus
-                            .filter(character => !character.found)
-                            .map((character, index) => {
-                                return (
-                                    <div
-                                        onClick={e => checkAnswer(e)}
-                                        key={index}
-                                    >
-                                        {character.name}
-                                    </div>
-                                );
-                            })}
-                    </div>
-                </div>
+                <CharacterSelect
+                    foundStatus={foundStatus}
+                    checkAnswer={checkAnswer}
+                    x={characterSelect.x}
+                    y={characterSelect.y}
+                />
             )}
         </div>
     );
