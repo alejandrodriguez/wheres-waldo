@@ -1,6 +1,7 @@
 // TODO Change out mickey specific for props
 
 import React, { useState } from "react";
+import AnswerKey from "./AnswerKey";
 
 function Game(props) {
     const [characterSelect, setCharacterSelect] = useState({
@@ -84,19 +85,7 @@ function Game(props) {
                 </div>
             </div>
             {/* Key listing characters to be found */}
-            <ul className="answer-key">
-                <p>Can you find...?</p>
-                {foundStatus.map((character, index) => {
-                    return (
-                        <div
-                            className={character.found ? "found" : undefined}
-                            key={index}
-                        >
-                            {character.name}
-                        </div>
-                    );
-                })}
-            </ul>
+            <AnswerKey foundStatus={foundStatus} />
             {characterSelect.display && (
                 <div
                     className="select-wrapper"
