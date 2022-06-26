@@ -117,3 +117,75 @@
 .select-character > div:hover {
     background-color: rgb(151, 170, 255);
 }
+
+.victory-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 1;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.victory-screen-content {
+    text-align: center;
+    padding: 20px;
+    background-color: white;
+    box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 7px 20px 0 rgba(0, 0, 0, 0.17);
+    font-size: 18px;
+}
+
+.victory-screen-content * {
+    margin-bottom: 15px;
+}
+
+.victory-screen-content span {
+    font-weight: bold;
+}
+
+.victory-screen-content button {
+    padding: 5px 20px;
+}
+
+.victory-screen-content form {
+    margin-bottom: 0;
+}
+
+.victory-screen label {
+    margin-bottom: 0;
+}
+
+.victory-screen form * {
+    display: block;
+    margin: auto;
+}
+
+.victory-screen-content h3 {
+    font-size: 20px;
+}
+
+.victory-screen-content input {
+    font-size: 24px;
+    text-align: center;
+    width: 90px;
+    text-transform: uppercase;
+    margin-bottom: 15px;
+}
+
+.close-modal {
+    float: right;
+    cursor: pointer;
+    color: gray;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.close-modal:hover {
+    float: right;
+    cursor: pointer;
+    color: black;
+}

@@ -1,8 +1,7 @@
-// TODO Change out mickey specific for props
-
 import React, { useState, useEffect, useRef } from "react";
 import AnswerKey from "./AnswerKey";
 import CharacterSelect from "./CharacterSelect";
+import VictoryScreen from "./VictoryScreen";
 
 function Game(props) {
     const [characterSelect, setCharacterSelect] = useState({
@@ -43,7 +42,6 @@ function Game(props) {
             correctY - 25 <= characterSelect.y &&
             characterSelect.y <= correctY + 25
         ) {
-            console.log("Correct!");
             // Update the character's found status to be true
             const updatedFoundStatus = [...foundStatus];
             const index = updatedFoundStatus.indexOf(
@@ -51,22 +49,40 @@ function Game(props) {
             );
             updatedFoundStatus[index] = { ...updatedFoundStatus[index] };
             updatedFoundStatus[index].found = true;
-            // Check if all characters have been found
+            // Check if all characters have been found and game is over
             setFoundStatus(updatedFoundStatus);
             if (
                 updatedFoundStatus.every(character => character.found === true)
             ) {
-                stopStopwatch();
+                endGame();
                 console.log("All found!", "Time:", stopwatch);
             }
-        } else {
-            console.log("Wrong!");
         }
         setCharacterSelect(({ ...characterSelect }.display = false));
     }
 
     function stopStopwatch() {
         clearInterval(stopwatchID.current);
+    }
+
+    const [initials, setInitials] = useState("");
+
+    function handleInitials(e) {
+        // Prevent entering of non-alphabetic characters
+        if (
+            e.type === "keydown" &&
+            (e.keyCode > 92 || (e.keyCode >= 48 && e.keyCode <= 57))
+        ) {
+            return e.preventDefault();
+        }
+        setInitials(e.target.value);
+    }
+
+    const [displayVictoryScreen, setDisplayVictoryScreen] = useState(false);
+
+    function endGame() {
+        stopStopwatch();
+        setDisplayVictoryScreen(true);
     }
 
     // Set up timer
@@ -123,6 +139,14 @@ function Game(props) {
                 <AnswerKey foundStatus={foundStatus} />
             </div>
             <div className="stopwatch">{(stopwatch / 1000).toFixed(2)}</div>
+            {displayVictoryScreen && (
+                <VictoryScreen
+                    time={(stopwatch / 1000).toFixed(2)}
+                    initials={initials}
+                    handleInitials={handleInitials}
+                    closeScreen={() => setDisplayVictoryScreen(false)}
+                />
+            )}
         </div>
     );
 }
