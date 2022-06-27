@@ -180,8 +180,6 @@
     float: right;
     cursor: pointer;
     color: gray;
-    font-weight: bold;
-    font-size: 18px;
 }
 
 .close-modal:hover {

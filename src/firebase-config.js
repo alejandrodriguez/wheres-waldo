@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore, collection } from "firebase/firestore";
+import { getFirestore } from "firebase/firestore";
 
 //Firebase configuration
 const firebaseConfig = {
@@ -15,6 +15,4 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 
 // Initialize Firestore Database
-const db = getFirestore(app);
-
-export const highScores = collection(db, "high-scores");
+export const db = getFirestore(app);

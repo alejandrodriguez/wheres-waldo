@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { highScores } from "../firebase-config";
-import { addDoc } from "firebase/firestore";
+import { db } from "../firebase-config";
+import { collection, addDoc } from "firebase/firestore";
 
 function VictoryScreen(props) {
     const [initials, setInitials] = useState("");
@@ -27,8 +27,8 @@ function VictoryScreen(props) {
             console.log("rejected");
             return;
         }
-        addDoc(highScores, {
-            initials,
+        addDoc(collection(db, `${props.game}-high-scores`), {
+            initials: initials.toLowerCase(),
             score: props.time
         });
     }

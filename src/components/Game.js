@@ -85,14 +85,16 @@ function Game(props) {
 
     return (
         <div className="Game">
-            <h1>Where's Mickey?</h1>
+            <h1>
+                Where's {props.name[0].toUpperCase() + props.name.slice(1)}?
+            </h1>
             <div className="Game-main">
                 <div className="image-container">
                     <div className="image-wrapper">
                         <img
                             onClick={displayCharacterSelect}
                             src={props.src}
-                            alt="A where's waldo game involving Mickey and friends at Disneyland."
+                            alt={props.alt}
                         />
                         {/* Display popup menu on click */}
                         {characterSelect.display && (
@@ -128,6 +130,7 @@ function Game(props) {
             <div className="stopwatch">{(stopwatch / 1000).toFixed(2)}</div>
             {displayVictoryScreen && (
                 <VictoryScreen
+                    game={props.name}
                     time={(stopwatch / 1000).toFixed(2)}
                     closeScreen={() => setDisplayVictoryScreen(false)}
                 />
