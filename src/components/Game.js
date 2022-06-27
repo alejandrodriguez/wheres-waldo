@@ -65,19 +65,6 @@ function Game(props) {
         clearInterval(stopwatchID.current);
     }
 
-    const [initials, setInitials] = useState("");
-
-    function handleInitials(e) {
-        // Prevent entering of non-alphabetic characters
-        if (
-            e.type === "keydown" &&
-            (e.keyCode > 92 || (e.keyCode >= 48 && e.keyCode <= 57))
-        ) {
-            return e.preventDefault();
-        }
-        setInitials(e.target.value);
-    }
-
     const [displayVictoryScreen, setDisplayVictoryScreen] = useState(false);
 
     function endGame() {
@@ -103,7 +90,7 @@ function Game(props) {
                 <div className="image-container">
                     <div className="image-wrapper">
                         <img
-                            onClick={e => displayCharacterSelect(e)}
+                            onClick={displayCharacterSelect}
                             src={props.src}
                             alt="A where's waldo game involving Mickey and friends at Disneyland."
                         />
@@ -142,8 +129,6 @@ function Game(props) {
             {displayVictoryScreen && (
                 <VictoryScreen
                     time={(stopwatch / 1000).toFixed(2)}
-                    initials={initials}
-                    handleInitials={handleInitials}
                     closeScreen={() => setDisplayVictoryScreen(false)}
                 />
             )}

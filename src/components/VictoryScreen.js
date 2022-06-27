@@ -1,6 +1,38 @@
-import React from "react";
+import React, { useState } from "react";
+import { highScores } from "../firebase-config";
+import { addDoc } from "firebase/firestore";
 
 function VictoryScreen(props) {
+    const [initials, setInitials] = useState("");
+
+    function handleInitials(e) {
+        // Prevent entering of non-alphabetic characters
+        if (
+            e.type === "keydown" &&
+            (e.keyCode > 92 || (e.keyCode >= 48 && e.keyCode <= 57))
+        ) {
+            return e.preventDefault();
+        }
+        setInitials(e.target.value);
+    }
+
+    function submitScore(e) {
+        e.preventDefault();
+        // Reject if initials are invalid
+        if (
+            typeof initials !== "string" ||
+            initials.length > 3 ||
+            initials.length < 1
+        ) {
+            console.log("rejected");
+            return;
+        }
+        addDoc(highScores, {
+            initials,
+            score: props.time
+        });
+    }
+
     return (
         <div className="victory-screen">
             <div className="victory-screen-content">
@@ -23,12 +55,12 @@ function VictoryScreen(props) {
                         required
                         maxLength={3}
                         pattern="[a-zA-z]+"
-                        value={props.initials}
-                        onKeyDown={e => props.handleInitials(e)}
-                        onChange={e => props.handleInitials(e)}
+                        value={initials}
+                        onKeyDown={handleInitials}
+                        onChange={handleInitials}
                         autoFocus
                     />
-                    <button>Submit</button>
+                    <button onClick={submitScore}>Submit</button>
                 </form>
             </div>
         </div>
