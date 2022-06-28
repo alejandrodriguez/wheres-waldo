@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
 import AnswerKey from "./AnswerKey";
 import CharacterSelect from "./CharacterSelect";
 import VictoryScreen from "./VictoryScreen";
@@ -128,10 +129,11 @@ function Game(props) {
                 <AnswerKey foundStatus={foundStatus} />
             </div>
             <div className="stopwatch">{(stopwatch / 1000).toFixed(2)}</div>
+            <Link to={`/${props.name}/highscores`}>View High Scores</Link>
             {displayVictoryScreen && (
                 <VictoryScreen
                     game={props.name}
-                    time={(stopwatch / 1000).toFixed(2)}
+                    time={stopwatch / 1000}
                     closeScreen={() => setDisplayVictoryScreen(false)}
                 />
             )}

@@ -9,7 +9,7 @@ function HighScores(props) {
         async function queryHighScores() {
             const highScoresQuery = query(
                 collection(db, `${props.game}-high-scores`),
-                orderBy("score"),
+                orderBy("time"),
                 limit(50)
             );
             const querySnapshot = await getDocs(highScoresQuery);
@@ -22,16 +22,30 @@ function HighScores(props) {
 
     return (
         <div className="HighScores">
-            {highScores.map((entry, index) => {
-                return (
-                    <div key={index}>
-                        <div>{entry.initials.toUpperCase()}</div>
-                        <div>{entry.score.toFixed(2)}</div>
-                    </div>
-                );
-            })}
+            <h1>
+                Where's {props.game[0].toUpperCase() + props.game.slice(1)} High
+                Scores
+            </h1>
+            <table>
+                <tbody>
+                    {highScores.map((entry, index) => {
+                        return (
+                            <tr key={index}>
+                                <td>{index + 1}</td>
+                                <td>{entry.initials.toUpperCase()}</td>
+                                <td>{entry.time.toFixed(2)}s</td>
+                            </tr>
+                        );
+                    })}
+                </tbody>
+            </table>
         </div>
     );
 }
 
 export default HighScores;
+
+/* <div key={index}>
+<div>{entry.initials.toUpperCase()}</div>
+<div>{entry.score.toFixed(2)}</div>
+</div> */

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { db } from "../firebase-config";
 import { collection, addDoc } from "firebase/firestore";
 
@@ -16,6 +17,8 @@ function VictoryScreen(props) {
         setInitials(e.target.value);
     }
 
+    const navigate = useNavigate();
+
     function submitScore(e) {
         e.preventDefault();
         // Reject if initials are invalid
@@ -29,8 +32,9 @@ function VictoryScreen(props) {
         }
         addDoc(collection(db, `${props.game}-high-scores`), {
             initials: initials.toLowerCase(),
-            score: props.time
+            time: props.time
         });
+        navigate(`/${props.game}/highscores`);
     }
 
     return (
@@ -41,7 +45,8 @@ function VictoryScreen(props) {
                 </span>
                 <h3>You win!</h3>
                 <p>
-                    You found everyone in <span>{props.time}</span> seconds.
+                    You found everyone in <span>{props.time.toFixed(2)}</span>{" "}
+                    seconds.
                 </p>
                 <p>
                     Submit your score to see how to you did compared to others!
